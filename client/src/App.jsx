@@ -1,4 +1,9 @@
 import { useState } from 'react'
+import { Route, Router, Routes } from 'react-router'
+import Header from './components/Header/Header'
+import Footer from './components/Footer/Footer';
+import Home from './components/Home/Home';
+import Catalog from './components/Catalog/Catalog';
 
 
 function App() {
@@ -6,10 +11,19 @@ function App() {
 
   return (
     <>
-      <div>123213231</div>
+    
+      
+        <Header/>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/games" element={<Catalog />} />
+        </Routes>
+
+       
+      <Footer/>
+      
     </>
-     
-  ) 
+  ); 
 }
 
 export default App
