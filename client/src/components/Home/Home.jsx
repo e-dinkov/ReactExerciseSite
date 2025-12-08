@@ -1,6 +1,7 @@
 import {  useEffect, useState } from "react";
 import Game from "../Game/Game";
 
+
 export default function Home() {
   const [games, setGames] = useState([]);
 
@@ -9,9 +10,15 @@ export default function Home() {
       .then(res => res.json())
       .then(data => {
         const resultGames = Object.values(data);
+        console.log(data);
+        
         const newGames = resultGames.sort((a, b) => b._createdOn - a._createdOn).slice(0, 3);
         setGames(newGames);
-      });
+      })
+      .catch(err => alert(err))
+    
+    
+    
   }, []);
     return (
       <section id="welcome-world">
