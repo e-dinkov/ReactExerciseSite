@@ -1,22 +1,44 @@
-export default function CommentDetails() {
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router";
+
+export default function CommentDetails({refresh}) {
+  const navigate = useNavigate()
+  const { gameId } = useParams()
+  const [comments, setComments] = useState([]);
+  
+    useEffect(() => {
+      fetch(`http://localhost:3030/jsonstore/comments`)
+        .then(res => res.json())
+        .then(data => {
+          
+          console.log(data);
+          
+          const gameComments = Object.values(data).filter(c => c.gameId == gameId)
+          console.log(gameComments);
+          setComments(gameComments);
+         })
+        .catch(err => alert(err));
+    }, [gameId,refresh])
+  console.log(comments);
+  
   return (
     <div className="details-comments">
       <h2>Comments:</h2>
       <ul>
-        <li className="comment">
+        {comments.map((comment) => {
+          return( <li key = {comment._id} className="comment">
           <p>
-            Content: A masterpiece of world design, though the boss fights are
-            brutal.
+            {comment.author}:{comment.comment}
           </p>
-        </li>
-        <li className="comment">
-          <p>
-            Content: Truly feels like a next-gen evolution of the Souls formula!
-          </p>
-        </li>
+        </li>)
+         
+          
+        })}
+        
+       
       </ul>
-      {/* Display paragraph: If there are no games in the database */}
-      {/* <p class="no-comment">No comments.</p> */}
+     {comments.length == 0 && <p className="no-comment">No comments.</p>}
+    
     </div>
   );
 }

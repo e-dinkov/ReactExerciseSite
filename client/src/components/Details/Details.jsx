@@ -6,7 +6,8 @@ import CommentDetails from "./comment-details/CommentDetails";
 export default function Details({user}) {
     const navigate = useNavigate();
     const { gameId } = useParams();
-    const [game, setGame] = useState({});
+  const [game, setGame] = useState({});
+  const [refresh, setRefresh] = useState(false);
     useEffect(() => {
         fetch(`http://localhost:3030/jsonstore/games/${gameId}`)
             .then(res => res.json())
@@ -67,10 +68,11 @@ export default function Details({user}) {
               Delete
             </button>
           </div>
-          <CommentDetails />
+          <CommentDetails refresh={refresh} />
         </div>
         {/* Add Comment ( Only for logged-in users, which is not creators of the current game ) */}
-        <CreateComment user={user} />
+        {user && <CreateComment user={user} refresh={refresh} setRefresh={setRefresh}/>}
+        
       </section>
     );
 }

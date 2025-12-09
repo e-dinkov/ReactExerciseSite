@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useParams } from "react-router";
 
-export default function CreateComment({user}) {
+export default function CreateComment({user, refresh, setRefresh}) {
     const [comment, setComment] = useState('');
     const {gameId} = useParams();
     const changeHandler = (e) => {
@@ -12,13 +12,14 @@ export default function CreateComment({user}) {
     const submitHandler = async() => {
         const commentData = {comment,author: user.email, gameId};
        try {
-        await fetch('http://localhost:3030/jsonstore/games/comment', {
+        await fetch('http://localhost:3030/jsonstore/comments', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(commentData)
         })
+         setRefresh(!refresh);
        } catch (error) {
            alert(error.message);
         
