@@ -15,27 +15,29 @@ import Edit from './components/Edit/Edit';
 
 function App() {
   const [user, setUser] = useState(null);
-  const [registeredUsers, setRegisteredUsers] = useState([]);
+
   
-  const registerHandler = (email, password) => {
-    if(registeredUsers.some((u) => u.email === email)) {
-      return alert('User with this email already exists!');
-    }
+  const registerHandler = async(email, password) => {
+    const response = await fetch('http://localhost:3030/users/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ email, password })
+    })
+    const result = await response.json();
+    console.log(result);
+    
+ 
 
     setUser({ email, password })
-    setRegisteredUsers(state => [...state, { email, password }]) 
-    console.log(registeredUsers);
+    
+   
     
 
   }
   const loginHandler = (email, password) => {
-    const currUser = registeredUsers.find((u) => u.email === email);
-    console.log(currUser);
     
-    if(!currUser) {
-      return alert('User with this email does not exist!');
-    }
-    setUser(currUser)
   }
 
   const logoutHandler = () => {
